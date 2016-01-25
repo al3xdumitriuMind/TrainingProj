@@ -11,6 +11,7 @@ package com.mind.trainingProject.parser;
 
 import static com.mind.trainingProject.model.LoggingSample.logger;
 
+import java.sql.Connection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,7 +49,8 @@ public class CSVValidator
     private ConcurrentHashMap<String, String> jobs;
     private ConcurrentHashMap<String, String> locales;
 
-    public String[] validateAll( String[] splitted )
+    public String[] validateAll( String[] splitted,
+                                 Connection connection )
     {
 
         String[] codes = new String[2];
@@ -65,7 +67,7 @@ public class CSVValidator
             codes[0] = "Invalid first name";
             logger.warn( "Invalid first name" );
         }
-        else if( !validateLastName(splitted[LAST_NAME_INDEX]) )
+        else if( !validateLastName( splitted[LAST_NAME_INDEX] ) )
         {
             codes[0] = "Invalid last name";
             logger.warn( "Invalid last name" );
@@ -95,11 +97,11 @@ public class CSVValidator
             codes[0] = "Invalid state(over 15 characters)";
             logger.warn( "Invalid state(over 15 characters)" );
         }
-        else if( ( jobCode = validateJob( splitted[JOB_CODE_INDEX] ) ) == null )
+        else if( ( jobCode = validateJob( splitted[JOB_CODE_INDEX], connection) ) == null )
         {
             codes[0] = "Invalid job";
         }
-        else if( ( localeCode = validateLocale( splitted[LOCALE_CODE_INDEX] ) ) == null )
+        else if( ( localeCode = validateLocale( splitted[LOCALE_CODE_INDEX], connection ) ) == null )
         {
             codes[0] = "Invalid locale";
         }
@@ -117,19 +119,21 @@ public class CSVValidator
         {
             return false;
         }
-        if(firstName.trim( ).isEmpty( )){
+        if( firstName.trim( ).isEmpty( ) )
+        {
             return false;
         }
         return true;
     }
-    
+
     private boolean validateLastName( String lastName )
     {
         if( lastName.length( ) > LAST_NAME_MAX_LENGTH )
         {
             return false;
         }
-        if(lastName.trim( ).isEmpty( )){
+        if( lastName.trim( ).isEmpty( ) )
+        {
             return false;
         }
         return true;
@@ -175,7 +179,8 @@ public class CSVValidator
         return true;
     }
 
-    private String validateJob( String job )
+    private String validateJob( String job,
+                                Connection connection )
     {
         String code = null;
         JDBCJob JDBCjob = new JDBCJob( );
@@ -187,7 +192,7 @@ public class CSVValidator
 
         if( jobs == null )
         {
-            if( ( jobs = JDBCjob.saveAllJobs( ) ) == null )
+            if( ( jobs = JDBCjob.getAllJobs( connection ) ) == null )
             {
                 logger.error( "Couldn't save jobs into local variable" );
             }
@@ -227,7 +232,8 @@ public class CSVValidator
         return null;
     }
 
-    private String validateLocale( String locale )
+    private String validateLocale( String locale,
+                                   Connection connection )
     {
         String code = null;
         JDBCLocale JDBClocale = new JDBCLocale( );
@@ -239,7 +245,7 @@ public class CSVValidator
 
         if( locales == null )
         {
-            if( ( locales = JDBClocale.saveAllLocales( ) ) == null )
+            if( ( locales = JDBClocale.saveAllLocales( connection ) ) == null )
             {
                 logger.error( "Couldn't save jobs into local variable" );
             }

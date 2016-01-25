@@ -51,6 +51,7 @@ public class OracleConnectionSingleton
         return connection;
     }
     
+    
     public static void closeConnection(){
         try
         {

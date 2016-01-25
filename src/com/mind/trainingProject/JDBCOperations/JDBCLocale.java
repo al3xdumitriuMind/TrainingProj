@@ -22,97 +22,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class JDBCLocale
 {
-    // NOT USED ANYMORE
-    public String validateLocaleDescription( String localeDescription )
+
+    public ConcurrentHashMap<String, String> saveAllLocales( Connection connectionInstance )
     {
 
-        Connection connection = OracleConnectionSingleton.getInstance( );
-        PreparedStatement prepareStatement = null;
-        ResultSet result = null;
-        try
-        {
-            prepareStatement = connection.prepareStatement( "SELECT CODE as c FROM TRAIN2.LOCALE WHERE DESCRIPTION = ?" );
-            prepareStatement.setString( 1, localeDescription );
-            result = prepareStatement.executeQuery( );
-            if( result.next( ) )
-            {
-                return result.getString( "c" );
-            }
-            return null;
-        }
-        catch( SQLException e )
-        {
-            logger.error( "validateLocaleDescription SQL Exception", e );
-        }
-        finally
-        {
-            try
-            {
-                if( prepareStatement != null )
-                    prepareStatement.close( );
-                if( result != null )
-                    result.close( );
-
-            }
-            catch( SQLException e )
-            {
-                logger.error( "sql close exception", e );
-                return null;
-            }
-        }
-
-        return null;
-    }
-
-    // NOT USED ANYMORE
-    public String validateLocaleCode( String code )
-    {
-
-        Connection connection = OracleConnectionSingleton.getInstance( );
-        PreparedStatement prepareStatement = null;
-        ResultSet result = null;
-        try
-        {
-            prepareStatement = connection.prepareStatement( "SELECT CODE as c FROM TRAIN2.LOCALE WHERE CODE = ?" );
-            prepareStatement.setString( 1, code );
-            result = prepareStatement.executeQuery( );
-            if( result.next( ) )
-            {
-                return result.getString( "c" );
-
-            }
-            return null;
-        }
-        catch( SQLException e )
-
-        {
-            logger.error( "validateLocaleCode SQL Exception", e );
-        }
-        finally
-        {
-            try
-            {
-                if( prepareStatement != null )
-                    prepareStatement.close( );
-                if( result != null )
-                    result.close( );
-
-            }
-            catch( SQLException e )
-            {
-                logger.error( "sql close exception", e );
-                return null;
-            }
-        }
-
-        return null;
-
-    }
-
-    public ConcurrentHashMap<String, String> saveAllLocales( )
-    {
-
-        Connection connection = OracleConnectionSingleton.getInstance( );
+        Connection connection = connectionInstance;
         PreparedStatement prepareStatement = null;
         ResultSet result = null;
         ConcurrentHashMap<String, String> locales = new ConcurrentHashMap<String, String>( );
@@ -152,9 +66,96 @@ public class JDBCLocale
 
     }
 
+    // // NOT USED ANYMORE
+    // public String validateLocaleDescription( String localeDescription )
+    // {
+    //
+    // Connection connection = OracleConnectionSingleton.getInstance( );
+    // PreparedStatement prepareStatement = null;
+    // ResultSet result = null;
+    // try
+    // {
+    // prepareStatement = connection.prepareStatement( "SELECT CODE as c FROM TRAIN2.LOCALE WHERE DESCRIPTION = ?" );
+    // prepareStatement.setString( 1, localeDescription );
+    // result = prepareStatement.executeQuery( );
+    // if( result.next( ) )
+    // {
+    // return result.getString( "c" );
+    // }
+    // return null;
+    // }
+    // catch( SQLException e )
+    // {
+    // logger.error( "validateLocaleDescription SQL Exception", e );
+    // }
+    // finally
+    // {
+    // try
+    // {
+    // if( prepareStatement != null )
+    // prepareStatement.close( );
+    // if( result != null )
+    // result.close( );
+    //
+    // }
+    // catch( SQLException e )
+    // {
+    // logger.error( "sql close exception", e );
+    // return null;
+    // }
+    // }
+    //
+    // return null;
+    // }
+    //
+    // // NOT USED ANYMORE
+    // public String validateLocaleCode( String code )
+    // {
+    //
+    // Connection connection = OracleConnectionSingleton.getInstance( );
+    // PreparedStatement prepareStatement = null;
+    // ResultSet result = null;
+    // try
+    // {
+    // prepareStatement = connection.prepareStatement( "SELECT CODE as c FROM TRAIN2.LOCALE WHERE CODE = ?" );
+    // prepareStatement.setString( 1, code );
+    // result = prepareStatement.executeQuery( );
+    // if( result.next( ) )
+    // {
+    // return result.getString( "c" );
+    //
+    // }
+    // return null;
+    // }
+    // catch( SQLException e )
+    //
+    // {
+    // logger.error( "validateLocaleCode SQL Exception", e );
+    // }
+    // finally
+    // {
+    // try
+    // {
+    // if( prepareStatement != null )
+    // prepareStatement.close( );
+    // if( result != null )
+    // result.close( );
+    //
+    // }
+    // catch( SQLException e )
+    // {
+    // logger.error( "sql close exception", e );
+    // return null;
+    // }
+    // }
+    //
+    // return null;
+    //
+    // }
+
     public static void main( String[] args )
     {
-        //JDBCLocale JDBClocale = new JDBCLocale( );
+        // JDBCLocale JDBClocale = new JDBCLocale( );
         // System.out.println( JDBClocale.validateLocaleDescription( "Suceava,ROMANIA" ) );
         // System.out.println( validateLocaleCode( "AAbsda" ) );
     }

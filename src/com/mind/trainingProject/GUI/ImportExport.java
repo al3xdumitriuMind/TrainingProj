@@ -25,6 +25,10 @@ import java.awt.event.ActionListener;
 
 public class ImportExport extends JPanel implements ActionListener
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5360873708045489441L;
     protected JButton    importButton, exportButton;
     protected JTextField importTextField, exportTextField;
 
@@ -69,7 +73,6 @@ public class ImportExport extends JPanel implements ActionListener
         {
             ImportFile importFile = new ImportFile( importTextField.getText( ) );
             importFile.start( );
-            // importFile.parseFile( importTextField.getText( ) );
         }
         else
         {

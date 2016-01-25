@@ -33,7 +33,8 @@ public class JDBCAccountExport extends Thread
     @Override
     public void run(){
         CSVFileWriter CSVfileWriter = new CSVFileWriter( );
-        Connection connection = OracleConnectionSingleton.getInstance( );
+        OracleConnection oracleConnection = new OracleConnection();
+        Connection connection = oracleConnection.getConnection( );
         PreparedStatement prepareStatement = null;
         ResultSet result = null;
         String line;
